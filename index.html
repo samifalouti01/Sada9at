@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Charity for Mosques</title>
+</head>
+<body>
+    <header>
+        <button id="addAnnouncementBtn">Add an Announcement</button>
+        <div class="custom-select">
+            <div class="selected-option" id="languageSelector">
+                <img src="https://plus.unsplash.com/premium_photo-1675875487955-0947bcad1597?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGFyJTIwZmxhZ3xlbnwwfHwwfHx8fDE2OTY0ODI2NjE&crop=entropy" class="flag">
+                <span class="selected-label">Arabic</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="options" style="display:none;">
+                <div class="option" data-value="en"><img src="https://flagcdn.com/us.svg" class="flag">English</div>
+                <div class="option" data-value="ar"><img src="https://flagcdn.com/sa.svg" class="flag">العربية</div>
+            </div>
+        </div>  
+    </header>      
+
+    <div id="searchContainer" class="searchContainer">
+        <i class="fas fa-search search-icon"></i>
+        <input class="searchBar" type="text" id="searchBar" placeholder="Search for mosques...">
+        <span id="clearSearch" class="clear-icon" style="display: none;">&times;</span>
+    </div>
+       
+
+    <main id="cardsContainer">        
+    </main>
+
+    <div id="loadingSpinner" class="spinner" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="closePopup">&times;</span>
+            <h2 id="popupTitle">Add an Announcement</h2>
+            <form id="announcementForm">
+                <input type="text" name="imamName" id="imamName" placeholder="Imam Name" required>
+                <input type="text" name="mosqueName" id="mosqueName" placeholder="Mosque Name" required>
+                <input type="text" name="location" id="location" placeholder="Location" required>
+                <textarea name="description" id="description" placeholder="Donation Specifications" required></textarea>
+                <input type="text" name="code" id="code" placeholder="Code" required>
+                <label for="facebookEmbed">Optional:</label>
+                <input type="text" name="facebookEmbed" id="facebookEmbed" placeholder="Facebook username ID">
+                <button type="submit">Submit</button>
+            </form>            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
