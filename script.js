@@ -9,25 +9,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const languageSelector = document.getElementById("languageSelector");
     const optionsContainer = document.querySelector(".options");
     const clearSearch = document.getElementById("clearSearch");
+    const loadingSpinner = document.getElementById("loadingSpinner");
 
     let mosqueData = [];
     const validCodes = ["CODE1", "CODE2", "CODE3"];
-
+    
     popup.style.display = "none";
-
+    
     addAnnouncementBtn.onclick = () => popup.style.display = "flex";
     closePopup.onclick = () => popup.style.display = "none";
-
+    
     window.onclick = (event) => {
         if (event.target === popup) popup.style.display = "none";
     };
-
+    
     fetchMosqueData();
 
     announcementForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const enteredCode = codeInput.value.trim();
-
+        
         if (!validCodes.includes(enteredCode)) {
             alert("The code you entered is not valid.");
             return;
@@ -43,18 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: params
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Announcement added successfully.");
-                    announcementForm.reset();
-                    popup.style.display = "none";
-                    fetchMosqueData();
-                } else {
-                    alert("Error: " + (data.error || "Unknown error"));
-                }
-            })
-            .catch(error => console.error("Error submitting form:", error));
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Announcement added successfully.");
+                announcementForm.reset();
+                popup.style.display = "none";
+                fetchMosqueData();
+            } else {
+                alert("Error: " + (data.error || "Unknown error"));
+            }
+        })
+        .catch(error => console.error("Error submitting form:", error));
     });
 
     searchBar.addEventListener("input", (e) => {
@@ -93,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         option.addEventListener("click", (event) => {
             const selectedValue = option.getAttribute("data-value");
             initializeLanguage(selectedValue);
-            optionsContainer.style.display = "none"; // Hide options after selection
+            optionsContainer.style.display = "none";
         });
     });
 
@@ -113,13 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const text = translations[language];
 
-        // Update the page text
         document.getElementById("popupTitle").textContent = text.addAnnouncement;
         document.getElementById("addAnnouncementBtn").textContent = text.addAnnouncement;
         document.getElementById("searchBar").placeholder = text.searchPlaceholder;
         document.querySelector("button[type='submit']").textContent = text.submit;
 
-        // Update language selector display
         const selectedOption = document.querySelector(`.option[data-value="${language}"]`);
         if (selectedOption) {
             const selectedLabel = selectedOption.textContent;
@@ -134,16 +133,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function displayCards(data) {
-        // Ensure the cardsContainer is defined
         const cardsContainer = document.getElementById('cardsContainer');
         if (!cardsContainer) {
             console.error('cardsContainer element not found');
             return;
         }
-    
+
         cardsContainer.innerHTML = "";
-    
-        // Title HTML
+
         let cardContainerHtml = `
             <div class="title">
                 <h1>بسم الله الرحمن الرحيم<br>
@@ -154,13 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 </h1>
             </div>`;
         cardsContainer.innerHTML += cardContainerHtml;
-    
+
         data.forEach(item => {
             const card = document.createElement("div");
             card.className = "card";
             const direction = isArabic(item.description) ? "rtl" : "ltr";
             card.setAttribute("dir", direction);
-    
+
             let cardHTML = `
                 <div class="card-text">
                     <h3 style="text-align: center;">${item.mosqueName}</h3>
@@ -169,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p class="description">${item.description}</p>
                 </div>
             `;
-    
+
             if (item.facebookEmbed) {
                 cardHTML += `
                     <div class="card-text">
@@ -187,18 +184,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
             }
-    
+
             card.innerHTML = cardHTML;
             cardsContainer.appendChild(card);
         });
     }
-    
-    // Helper function to determine if text is Arabic
-    function isArabic(text) {
-        const arabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
-        return arabic.test(text);
-    }
-    
 
     function isArabic(text) {
         const arabicRegex = /[\u0600-\u06FF]/;
@@ -206,9 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function fetchMosqueData() {
-        const loadingSpinner = document.getElementById("loadingSpinner");
-        loadingSpinner.style.display = "flex"; // Show spinner
-    
+        loadingSpinner.style.display = "flex";
+        
         fetch("https://script.google.com/macros/s/AKfycbx7fldYXvCCsADB82i0Ee-3yxy4mAOhQQLgpV2CuxcvN5NifXGbODpnJWXSOzUC9Bf9/exec")
             .then(response => response.json())
             .then(data => {
@@ -217,8 +206,30 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error("Error fetching mosque data:", error))
             .finally(() => {
-                loadingSpinner.style.display = "none"; // Hide spinner
+                loadingSpinner.style.display = "none";
             });
     }
-    
+
+    let startY;
+    let isPulling = false;
+
+    window.addEventListener("touchstart", (event) => {
+        startY = event.touches[0].clientY;
+    });
+
+    window.addEventListener("touchmove", (event) => {
+        const currentY = event.touches[0].clientY;
+        const distanceY = currentY - startY;
+
+        if (distanceY > 100 && window.scrollY === 0) {
+            isPulling = true;
+        }
+    });
+
+    window.addEventListener("touchend", () => {
+        if (isPulling) {
+            fetchMosqueData();
+            isPulling = false;
+        }
+    });
 });
