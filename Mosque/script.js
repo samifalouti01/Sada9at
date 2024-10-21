@@ -33,11 +33,26 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("The code you entered is not valid.");
             return;
         }
-
+    
+        // Get the selected country code and WhatsApp number
+        const countryCode = document.getElementById("countryCode").value;
+        let whatsappNumber = document.getElementById("whatsappEmbed").value.trim();
+        
+        // Remove leading '0' from whatsappNumber if it begins with '0'
+        if (whatsappNumber.startsWith("0")) {
+            whatsappNumber = whatsappNumber.replace(/^0/, '');
+        }
+    
+        // Concatenate the values into a single field
+        const combinedWhatsAppEmbed = countryCode + whatsappNumber;
+    
+        // Create a new FormData object and append the combined field
         const formData = new FormData(announcementForm);
+        formData.set("whatsappEmbed", combinedWhatsAppEmbed); // Set the combined field
+    
         const params = new URLSearchParams(formData).toString();
-
-        fetch("https://script.google.com/macros/s/AKfycbx7fldYXvCCsADB82i0Ee-3yxy4mAOhQQLgpV2CuxcvN5NifXGbODpnJWXSOzUC9Bf9/exec", {
+    
+        fetch("https://script.google.com/macros/s/AKfycbyhEROlgoBAO77piFJ8Co49cOtfUDB779zugVBvWflMrVzp73BmGHh6LtF9Vs4aBAh0/exec", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -57,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error submitting form:", error));
     });
+    
+    
 
     searchBar.addEventListener("input", (e) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -145,8 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="title">
                 <h1>بسم الله الرحمن الرحيم<br>
                     <small style="text-align: center; font-size: 0.8em; padding: 5px;">
-                        "وَأَنفِقُوا فِي سَبِيلِ اللَّهِ وَأَحْسِنُوا ۚ إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ"<br><br>
-                        — سورة البقرة (2:195)
+                        يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَنفِقُوا۟ مِمَّا رَزَقْنَـٰكُم مِّن قَبْلِ أَن يَأْتِىَ يَوْمٌ لَّا بَيْعٌ فِيهِ وَلَا خُلَّةٌ وَلَا شَفَـٰعَةٌ ۗ وَٱلْكَـٰفِرُونَ هُمُ ٱلظَّـٰلِمُونَ (٢٥٤)<br><br>
+                        — سورة البقرة (2:254)
                     </small>
                 </h1>
             </div>`;
@@ -160,27 +177,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let cardHTML = `
                 <div class="card-text">
-                    <h3 style="text-align: center;">${item.mosqueName}</h3>
-                    <h5 style="border-radius: 15px; padding: 5px; border: 1.5px solid black; text-align: center;">${item.imamName}</h5>
-                    <p style="text-align: left;">Location: ${item.location}</p>
+                    <h3 style="text-align: center;">🕌 ${item.mosqueName}</h3>
+                    <h5 style="border-radius: 15px; padding: 5px; border: 1.5px solid black; text-align: center;">🧔🏻 ${item.imamName}</h5>
+                    <p style="text-align: left;">📍 Location: ${item.location}</p>
                     <p class="description">${item.description}</p>
                 </div>
             `;
 
+            let contactHTML = '';
+
             if (item.facebookEmbed) {
+                contactHTML += `
+                    <div class="card-text">
+                        <a href="${item.facebookEmbed}" target="_blank" rel="noopener noreferrer">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 50px; height: 50px; margin-top: 8px;">
+                        </a>
+                    </div>
+                `;
+            }
+            
+            if (item.whatsappEmbed) {
+                contactHTML += `
+                    <div class="card-text">
+                        <a href="https://wa.me/${item.whatsappEmbed}" target="_blank" rel="noopener noreferrer">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/640px-WhatsApp.svg.png" alt="WhatsApp" style="width: 60px; height: 60px; margin-top: 8px;">
+                        </a>
+                    </div>
+                `;
+            }
+            
+            if (contactHTML) {
                 cardHTML += `
                     <div class="card-text">
-                        <h4>Facebook Page:</h4>
-                        <iframe
-                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fweb.facebook.com%2F${encodeURIComponent(item.facebookEmbed)}&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-                            width="100%"
-                            height="500"
-                            style="border: 0; border-radius: 10px; overflow: hidden; max-width: 100%; height: 500px;"
-                            scrolling="no"
-                            frameborder="0"
-                            allowfullscreen="true"
-                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-                        </iframe>
+                        <h4>Contact:</h4>
+                        ${contactHTML}
                     </div>
                 `;
             }
@@ -198,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function fetchMosqueData() {
         loadingSpinner.style.display = "flex";
         
-        fetch("https://script.google.com/macros/s/AKfycbx7fldYXvCCsADB82i0Ee-3yxy4mAOhQQLgpV2CuxcvN5NifXGbODpnJWXSOzUC9Bf9/exec")
+        fetch("https://script.google.com/macros/s/AKfycbyhEROlgoBAO77piFJ8Co49cOtfUDB779zugVBvWflMrVzp73BmGHh6LtF9Vs4aBAh0/exec")
             .then(response => response.json())
             .then(data => {
                 mosqueData = data;

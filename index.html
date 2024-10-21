@@ -3,57 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Charity for Mosques</title>
+    <title>Main Index</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .nav-button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <button id="addAnnouncementBtn">Add an Announcement</button>
-        <div class="custom-select">
-            <div class="selected-option" id="languageSelector">
-                <img src="https://plus.unsplash.com/premium_photo-1675875487955-0947bcad1597?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGFyJTIwZmxhZ3xlbnwwfHwwfHx8fDE2OTY0ODI2NjE&crop=entropy" class="flag">
-                <span class="selected-label">Arabic</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="options" style="display:none;">
-                <div class="option" data-value="en"><img src="https://flagcdn.com/us.svg" class="flag">English</div>
-                <div class="option" data-value="ar"><img src="https://flagcdn.com/sa.svg" class="flag">العربية</div>
-            </div>
-        </div>  
-    </header>      
+    <h1>Select a Page</h1>
 
-    <div id="searchContainer" class="searchContainer">
-        <i class="fas fa-search search-icon"></i>
-        <input class="searchBar" type="text" id="searchBar" placeholder="Search for mosques...">
-        <span id="clearSearch" class="clear-icon" style="display: none;">&times;</span>
-    </div>
-       
-
-    <main id="cardsContainer">        
-    </main>
-
-    <div id="loadingSpinner" class="spinner" style="display: none;">
-        <div class="loader"></div>
+    <div class="button-container">
+        <a href="Mosque/index.html" class="nav-button">Go to Folder 1</a>
+        <a href="Sick/index.html" class="nav-button">Go to Folder 2</a>
+        <a href="Blood/index.html" class="nav-button">Go to Folder 3</a>
+        <a href="GetCode/index.html" class="nav-button">Go to Folder 4</a>
     </div>
 
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <span class="close" id="closePopup">&times;</span>
-            <h2 id="popupTitle">Add an Announcement</h2>
-            <form id="announcementForm">
-                <input type="text" name="imamName" id="imamName" placeholder="Imam Name" required>
-                <input type="text" name="mosqueName" id="mosqueName" placeholder="Mosque Name" required>
-                <input type="text" name="location" id="location" placeholder="Location" required>
-                <textarea name="description" id="description" placeholder="Donation Specifications" required></textarea>
-                <input type="text" name="code" id="code" placeholder="Code" required>
-                <label for="facebookEmbed">Optional:</label>
-                <input type="text" name="facebookEmbed" id="facebookEmbed" placeholder="Facebook username ID">
-                <button type="submit">Submit</button>
-            </form>            
-        </div>
-    </div>
-
-    <script src="script.js"></script>
 </body>
 </html>

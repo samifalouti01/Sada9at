@@ -1,0 +1,369 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 70px;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url("bg.avif");
+    color: white;
+    padding: 50px;
+    text-align: center;
+}
+
+p {
+    color: #3e3e3e;
+    margin: 5px;
+}
+
+h3, h5 {
+    margin: 5px;
+}
+
+.title {
+    text-align: center;
+    width: 90%;
+}
+
+button {
+    background-color: rgb(42, 17, 0);
+    color: chocolate;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 10px;
+    border: 2px solid chocolate;
+    border-radius: 10px;
+    margin-left: -20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.searchContainer {
+    margin: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.searchBar {
+    padding: 10px;
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid #0B002E;
+    transition: border 0.3s ease, border-radius 0.3s ease, padding 0.3s ease, width 0.3s ease;
+}
+
+.searchBar:focus {
+    outline: none;
+    border-radius: 10px;
+    border: 2px solid #1e0081;
+    width: 85%; 
+}
+
+.fas fa-search search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+#cardsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 15px;
+    padding: 15px;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.card[dir="rtl"] {
+    text-align: right;
+}
+
+.card[dir="ltr"] {
+    text-align: left;
+}
+
+.popup {
+    display: none;
+    text-align: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    animation: fadeIn 0.5s;
+}
+
+.popup-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.description {
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    margin: 10px 0; 
+    line-height: 1.5; 
+}
+
+.popup input[type="text"],
+.popup textarea {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.popup input[type="text"]:focus,
+.popup textarea:focus {
+    border-color: #1e0081;
+    outline: none;
+}
+
+.popup textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+@media (max-width: 600px) {
+    .card {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .popup-content {
+        width: 300px;
+    }
+
+    .popup input[type="text"],
+    .popup textarea {
+        width: 90%;
+    }
+
+    header {
+        background-size: cover;
+    }
+}
+
+
+.custom-select {
+    position: relative;
+    margin-right: -20px;
+    display: inline-block;
+    width: 115px; 
+}
+
+.selected-option {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.selected-option .flag {
+    width: 20px; 
+    height: auto;
+    margin-right: 10px;
+}
+
+.options {
+    display: none; 
+    position: absolute;
+    background-color: white;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    animation: slideIn 0.5s forwards;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #f1f1f1; 
+    border-radius: 10px;
+}
+
+.option .flag {
+    width: 20px; 
+    height: auto;
+    margin-right: 10px;
+}
+
+
+.clear-icon {
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-left: 5px; 
+    color: #aaa; 
+}
+
+.clear-icon:hover {
+    color: red; 
+}
+
+.spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+
+.loader {
+    border: 8px solid #f3f3f3; 
+    border-top: 8px solid #d2691e; 
+    border-radius: 50%;
+    width: 60px; 
+    height: 60px; 
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loadingSpinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 20px;
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+
+#ayahContainer {
+    font-size: 18px;
+    text-align: center;
+    padding: 10px;
+    color: #000;
+    transition: opacity 0.5s ease-in-out; /* Ensures smooth transition */
+    opacity: 0;
+}
+
+#ayahContainer.show {
+    opacity: 1;
+}
+
+.animated-ayah {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.animated-ayah.show {
+    opacity: 1;
+}
+
+.whatsapp-input {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#countryCode {
+    margin-right: 10px;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 14px;
+    width: 100px;
+}
